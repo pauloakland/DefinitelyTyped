@@ -1,4 +1,4 @@
-// Type definitions for Angular Material (angular.material module) 1.1
+// Type definitions for Angular Material (angular.material module) 1.1.3
 // Project: https://github.com/angular/material
 // Definitions by: Blake Bigelow <https://github.com/blbigelow>, Peter Hajdu <https://github.com/PeterHajdu>, Davide Donadello <https://github.com/Dona278>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -6,10 +6,61 @@
 import * as angular from 'angular';
 
 declare var _: string;
-export = _;
+export default _;
+
+export type IAriaProvider = angular.material.IAriaProvider;
+export type IBottomSheetOptions = angular.material.IBottomSheetOptions;
+export type IBottomSheetService = angular.material.IBottomSheetService;
+export type IPresetDialog<T> = angular.material.IPresetDialog<T>;
+export type IAlertDialog = angular.material.IAlertDialog;
+export type IConfirmDialog = angular.material.IConfirmDialog;
+export type IPromptDialog = angular.material.IPromptDialog;
+export type IColorExpression = angular.material.IColorExpression;
+export type IColorService = angular.material.IColorService;
+export type IDialogOptions = angular.material.IDialogOptions;
+export type IDialogService = angular.material.IDialogService;
+export type IIcon = angular.material.IIcon;
+export type IIconProvider = angular.material.IIconProvider;
+export type IInkRippleOptions = angular.material.IInkRippleOptions;
+export type IInkRippleService = angular.material.IInkRippleService;
+export type IInteractionService = angular.material.IInteractionService;
+export type ILiveAnnouncer = angular.material.ILiveAnnouncerService;
+export type IMedia = angular.material.IMedia;
+export type ISidenavObject = angular.material.ISidenavObject;
+export type ISidenavService = angular.material.ISidenavService;
+export type IToastPreset<T> = angular.material.IToastPreset<T>;
+export type ISimpleToastPreset = angular.material.ISimpleToastPreset;
+export type IToastOptions = angular.material.IToastOptions;
+export type IToastService = angular.material.IToastService;
+export type IPalette = angular.material.IPalette;
+export type IThemeHues = angular.material.IThemeHues;
+export type IThemePalette = angular.material.IThemePalette;
+export type IBrowserColors = angular.material.IBrowserColors;
+export type IThemeColors = angular.material.IThemeColors;
+export type IThemeGrayScalePalette = angular.material.IThemeGrayScalePalette;
+export type ITheme = angular.material.ITheme;
+export type IThemeConfig = angular.material.IThemeConfig;
+export type IThemingProvider = angular.material.IThemingProvider;
+export type IDateLocaleProvider = angular.material.IDateLocaleProvider;
+export type IMenuService = angular.material.IMenuService;
+export type IColorPalette = angular.material.IColorPalette;
+export type IPanelConfig = angular.material.IPanelConfig;
+export type IPanelRef = angular.material.IPanelRef;
+export type IPanelPosition = angular.material.IPanelPosition;
+export type IPanelAnimation = angular.material.IPanelAnimation;
+export type IPanelGroup = angular.material.IPanelGroup;
+export type IPanelService = angular.material.IPanelService;
+export type IPanelProvider = angular.material.IPanelProvider;
+export type IProgressCircularConfig = angular.material.IProgressCircularConfig;
+export type IProgressCircularProvider = angular.material.IProgressCircularProvider;
+export type IStickyService = angular.material.IStickyService;
 
 declare module 'angular' {
     export namespace material {
+
+        interface IAriaProvider {
+            disableWarnings();
+        }
         interface IBottomSheetOptions {
             templateUrl?: string;
             template?: string;
@@ -129,6 +180,23 @@ declare module 'angular' {
             defaultIconSet(url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
             defaultViewBoxSize(viewBoxSize: number): IIconProvider; // default: 24
             defaultFontSet(name: string): IIconProvider;
+        }
+        interface IInkRippleOptions {
+            center?:boolean;
+            dimBackgorund?:boolean;
+            colorElement?: Element;
+            fitRipple?:boolean;
+        }
+        interface IInkRippleService {
+            attach(scope:IScope, element:Element, options?:IInkRippleOptions);
+            disableInkRipple(): void; //config-time method that disables ripples globally;
+        }
+        interface IInteractionService {
+            getLastInteractionType(): string | null;
+            isUserInvoked(checkDelay:number): boolean;
+        }
+        interface ILiveAnnouncerService {
+            announce(message:string, politeness:string); //politeness param {'off'|'polite'|'assertive'};
         }
 
         interface IMedia {
@@ -262,7 +330,7 @@ declare module 'angular' {
 
         interface IThemeConfig {
             disableTheming: boolean;
-            generateOnDemand: boolean;        
+            generateOnDemand: boolean;
             nonce: string;
             defaultTheme: string;
             alwaysWatchTheme: boolean;
@@ -296,6 +364,8 @@ declare module 'angular' {
             weekNumberFormatter(weekNumber: number): string;
             msgCalendar: string;
             msgOpenCalendar: string;
+            firstRenderableDate: Date; //defaults to January 1st 1880 if minimum date is not set
+            lastRenderableDate: Date; //defaults to January 1st 2130 if maximum date is not set
         }
 
         interface IMenuService {
@@ -327,6 +397,7 @@ declare module 'angular' {
             id?: string;
             template?: string;
             templateUrl?: string;
+            contentElement?: string | JQuery | Element;
             controller?: string | Function;
             controllerAs?: string;
             bindToController?: boolean; // default: true
@@ -351,6 +422,8 @@ declare module 'angular' {
             onDomRemoved?: Function;
             origin?: string | JQuery | Element;
             onCloseSuccess?: ((panel: IPanelRef, closeReason: string) => any);
+            groupName?:string | string[];
+
         }
 
         interface IPanelRef {
@@ -370,9 +443,12 @@ declare module 'angular' {
             removeClass(oldClass: string): void;
             toggleClass(toggleClass: string): void;
             updatePosition(position: IPanelPosition): void;
+            addToGroup(groupName:string): void;
+            removeFromGroup(groupName:string): void;
             registerInterceptor(type: string, callback: () => angular.IPromise<any>): IPanelRef;
             removeInterceptor(type: string, callback: () => angular.IPromise<any>): IPanelRef;
             removeAllInterceptors(type?: string): IPanelRef;
+            updateAnimation(animation:IPanelAnimation): void;
         }
 
         interface IPanelPosition {
@@ -396,6 +472,12 @@ declare module 'angular' {
             openFrom(from: string | Element | Event | { top: number, left: number }): IPanelAnimation;
             closeTo(to: string | Element | { top: number, left: number }): IPanelAnimation;
             withAnimation(cssClass: string | { open: string, close: string }): IPanelAnimation;
+            duration(open:number, close:number);
+        }
+        interface IPanelGroup {
+            panels:IPanelRef[];
+            openPanels:IPanelRef[];
+            maxOpen:number;
         }
 
         interface IPanelService {
@@ -403,6 +485,9 @@ declare module 'angular' {
             open(opt_config: IPanelConfig): angular.IPromise<IPanelRef>;
             newPanelPosition(): IPanelPosition;
             newPanelAnimation(): IPanelAnimation;
+            newPanelGroup(groupName:string, config?:{maxOpen:number}): IPanelGroup;
+            setGroupMaxOpen(groupName:string, maxOpen:number);
+
             xPosition: {
                 CENTER: string,
                 ALIGN_START: string,
@@ -436,7 +521,9 @@ declare module 'angular' {
                 LEFT: string,
             };
         }
-
+        interface IPanelProvider {
+            definePreset(name:string, preset:IPanelConfig);
+        }
         interface IProgressCircularConfig {
             progressSize?: number;
             strokeWidth?: number;
@@ -445,11 +532,14 @@ declare module 'angular' {
             durationIndeterminate?: number;
             startIndeterminate?: number;
             endIndeterminate?: number;
-            easeFnIndeterminate?: Function;        
+            easeFnIndeterminate?: Function;
         }
 
         interface IProgressCircularProvider {
             configure(options: IProgressCircularConfig): void;
+        }
+        interface IStickyService {
+            (scope:IScope, element:JQuery, elementClone?:JQuery): void;
         }
     }
 }
